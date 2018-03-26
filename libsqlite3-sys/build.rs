@@ -21,7 +21,6 @@ mod build {
         cc::Build::new()
             .file("sqlite3/sqlite3.c")
             .flag("-DSQLITE_CORE")
-            .flag("-DSQLITE_DEFAULT_FOREIGN_KEYS=1")
             .flag("-DSQLITE_ENABLE_API_ARMOR")
             .flag("-DSQLITE_ENABLE_COLUMN_METADATA")
             .flag("-DSQLITE_ENABLE_DBSTAT_VTAB")
