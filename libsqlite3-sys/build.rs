@@ -27,7 +27,7 @@ mod build {
             .flag("-DSQLITE_ENABLE_MEMORY_MANAGEMENT")
             .flag("-DSQLITE_ENABLE_STAT4")
             .flag("-DSQLITE_HAVE_ISNAN")
-            .flag("-DSQLITE_THREADSAFE=1")
+            .flag("-DSQLITE_THREADSAFE=0")
             .flag("-DSQLITE_USE_URI")
             .flag("-DHAVE_USLEEP=1")
             .compile("libsqlite3.a");
