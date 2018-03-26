@@ -49,9 +49,6 @@ version = "0.9"
 name = "config_log"
 harness = false
 
-[[test]]
-name = "deny_single_threaded_sqlite_config"
-
 [package.metadata.docs.rs]
 features = [ "backup", "blob", "chrono", "functions", "limits", "load_extension", "serde_json", "trace" ]
 all-features = false
