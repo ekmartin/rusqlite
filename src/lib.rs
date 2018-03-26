@@ -164,7 +164,7 @@ pub enum DatabaseName<'a> {
 
 // Currently DatabaseName is only used by the backup and blob mods, so hide this (private)
 // impl to avoid dead code warnings.
-#[cfg(any(feature = "backup", feature = "blob"))]
+#[cfg(any(feature = "backup", feature = "blob", feature = "wal"))]
 impl<'a> DatabaseName<'a> {
     fn to_cstring(&self) -> Result<CString> {
         use self::DatabaseName::{Main, Temp, Attached};
@@ -553,6 +553,11 @@ impl Connection {
             .load_extension(dylib_path.as_ref(), entry_point)
     }
 
+    #[cfg(feature = "wal")]
+    pub fn wal_checkpoint(&self, db_name: DatabaseName) -> Result<()> {
+        self.db.borrow_mut().wal_checkpoint(db_name)
+    }
+
     /// Get access to the underlying SQLite database connection handle.
     ///
     /// # Warning
@@ -820,6 +825,13 @@ impl InnerConnection {
                                       ptr::null_mut());
             self.decode_result(r)
         }
+    }
+
+    #[cfg(feature = "wal")]
+    fn wal_checkpoint(&mut self, db_name: DatabaseName) -> Result<()> {
+        let name = db_name.to_cstring()?;
+        let r = unsafe { ffi::sqlite3_wal_checkpoint(self.db(), name.as_ptr()) };
+        self.decode_result(r)
     }
 
     #[cfg(feature = "load_extension")]
